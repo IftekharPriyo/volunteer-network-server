@@ -4,6 +4,8 @@
   "description": "server for the frontend of Volunteer Network",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
+    "start:dev": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Iftekhar Priyo",
