@@ -18,6 +18,9 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
   const taskCollection = client.db(`${process.env.DB_NAME}`).collection(`${process.env.DB_COLLECTION_ONE}`);
   const taskLists = client.db(`${process.env.DB_NAME}`).collection(`${process.env.DB_COLLECTION_TWO}`)
+
+  // to upload bulk data
+
 //   app.post('/addTasks',(req, res)=>{
 //       const tasks = req.body;
 //       taskCollection.insertMany(tasks)
@@ -27,14 +30,26 @@ client.connect(err => {
 //       })
 
 //   })
-///
+
+// admins api to add events
+app.post('/addToCollection',(req, res) => {
+    const task = req.body
+    console.log(task)
+    taskCollection.insertOne(task)
+    .then(result=>{
+        console.log(result);
+    })
+})
+
+// to render all the tasks
   app.get('/taskLists',(req, res)=>{
       taskCollection.find({})
       .toArray((err, documents)=>{
           res.send(documents);
       })
   })
-///
+
+// to add task in personal profile
   app.post('/addTask',(req,res) => {
     const singleTask = req.body
     taskLists.insertOne(singleTask)
@@ -42,21 +57,24 @@ client.connect(err => {
         console.log('task added');
     })
 })
-///
+
+//to display one's assigned tasks
 app.get('/onesTasks',(req,res) => {
     taskLists.find({email:req.query.email})
     .toArray((err,documents)=>{
         res.send(documents)
     })
 })
-///
+
+// to delete one's tasks
 app.delete('/delete/:id',(req,res)=>{
     taskLists.deleteOne({_id:ObjectId(req.params.id)})
     .then(result=>{
         
     })
 })
-///
+
+// to see all the assigned tasks in individual profile
 app.get('/allTasks',(req,res) => {
     taskLists.find({})
     .toArray((err,documents)=>{
