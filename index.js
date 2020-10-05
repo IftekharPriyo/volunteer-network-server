@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const MongoClient = require('mongodb').MongoClient;
+const ObjectId = require('mongodb').ObjectId
 require('dotenv').config()
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.2lhwg.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
@@ -26,19 +27,40 @@ client.connect(err => {
 //       })
 
 //   })
-
+///
   app.get('/taskLists',(req, res)=>{
       taskCollection.find({})
       .toArray((err, documents)=>{
           res.send(documents);
       })
   })
-
+///
   app.post('/addTask',(req,res) => {
     const singleTask = req.body
     taskLists.insertOne(singleTask)
     .then(result=>{
         console.log('task added');
+    })
+})
+///
+app.get('/onesTasks',(req,res) => {
+    taskLists.find({email:req.query.email})
+    .toArray((err,documents)=>{
+        res.send(documents)
+    })
+})
+///
+app.delete('/delete/:id',(req,res)=>{
+    taskLists.deleteOne({_id:ObjectId(req.params.id)})
+    .then(result=>{
+        
+    })
+})
+///
+app.get('/allTasks',(req,res) => {
+    taskLists.find({})
+    .toArray((err,documents)=>{
+        res.send(documents)
     })
 })
 
