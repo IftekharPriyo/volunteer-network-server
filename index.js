@@ -41,7 +41,7 @@ app.post('/addToCollection',(req, res) => {
     })
 })
 
-// to render all the tasks
+// to render all the tasks in dash
   app.get('/taskLists',(req, res)=>{
       taskCollection.find({})
       .toArray((err, documents)=>{
@@ -74,7 +74,7 @@ app.delete('/delete/:id',(req,res)=>{
     })
 })
 
-// to see all the assigned tasks in individual profile
+// to see all the assigned tasks from every volunteer
 app.get('/allTasks',(req,res) => {
     taskLists.find({})
     .toArray((err,documents)=>{
